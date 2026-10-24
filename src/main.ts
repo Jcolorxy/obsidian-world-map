@@ -13,7 +13,9 @@ export default class WorldMapPlugin extends Plugin {
 	private centroids = new Map<string, [number, number]>();
 
 	async onload() {
-		await this.loadState();
+		// an older copy under another id would register the same view and stop this one loading
+		const older = await this.retireOlderCopies();
+		await this.loadState(older);
 		this.loadGeography();
 
 		this.registerView(VIEW_TYPE, (leaf) => new WorldMapView(leaf, this));
@@ -47,8 +49,49 @@ export default class WorldMapPlugin extends Plugin {
 
 	// ---------- data ----------
 
-	private async loadState() {
-		const stored = (await this.loadData()) as Partial<MapData> | null;
+	/**
+	 * Switch off any other copy of this plugin installed under a different id, and
+	 * return its data so a fresh install can take it over. Copies are recognised by
+	 * their manifest name and data shape, not by id.
+	 */
+	private async retireOlderCopies(): Promise<Partial<MapData> | null> {
+		const manager = (this.app as unknown as {
+			plugins?: { plugins?: Record<string, unknown>; manifests?: Record<string, { name?: string; dir?: string }>; disablePlugin?(id: string): Promise<void> };
+		}).plugins;
+		const isMapData = (d: unknown): d is Partial<MapData> => !!d && typeof (d as MapData).visits === "object";
+		let found: Partial<MapData> | null = null;
+
+		for (const [id, p] of Object.entries(manager?.plugins ?? {})) {
+			const o = p as { manifest?: { name?: string }; data?: unknown; activateView?: unknown } | null;
+			if (id === this.manifest.id || o?.manifest?.name !== this.manifest.name || typeof o.activateView !== "function" || !isMapData(o.data)) continue;
+			found ??= o.data;
+			try {
+				await manager?.disablePlugin?.(id);
+			} catch (e) {
+				new Notice(`World Map: could not switch off the older copy "${id}". Disable it under Community plugins.`);
+				console.error(e);
+			}
+		}
+		if (found) return found;
+
+		// not running: read its saved data straight from its folder
+		for (const [id, m] of Object.entries(manager?.manifests ?? {})) {
+			if (id === this.manifest.id || m.name !== this.manifest.name || !m.dir) continue;
+			try {
+				const data = JSON.parse(await this.app.vault.adapter.read(`${m.dir}/data.json`)) as unknown;
+				if (isMapData(data)) return data;
+			} catch {
+				// no data there
+			}
+		}
+		return null;
+	}
+
+	private async loadState(older: Partial<MapData> | null = null) {
+		let stored = (await this.loadData()) as Partial<MapData> | null;
+		// first run under this id: carry over the older copy's map
+		const adopt = !stored && !!older;
+		if (adopt) stored = older;
 		this.data = {
 			...DEFAULT_DATA,
 			...(stored ?? {}),
@@ -61,6 +104,10 @@ export default class WorldMapPlugin extends Plugin {
 			visit.years = Array.from(new Set(visit.years ?? [])).sort((a, b) => a - b);
 			visit.note ??= null;
 			visit.updated ??= Date.now();
+		}
+		if (adopt) {
+			await this.save();
+			new Notice("World Map: moved your map over from the older copy.");
 		}
 	}
 

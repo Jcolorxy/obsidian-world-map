@@ -57,7 +57,7 @@ Everything lives in the plugin's `data.json` in your vault: visits keyed by coun
 The plugin is not in the community directory yet. To install it by hand:
 
 1. Download `main.js`, `manifest.json` and `styles.css` from the latest release, or build them yourself (below).
-2. Copy them into `<your vault>/.obsidian/plugins/jinx-world-map/`.
+2. Copy them into `<your vault>/.obsidian/plugins/jcolorxy-world-map/`.
 3. In Obsidian, go to *Settings → Community plugins*, reload, and enable **World Map**.
 
 ## Build
