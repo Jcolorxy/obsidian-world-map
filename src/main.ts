@@ -56,7 +56,8 @@ export default class WorldMapPlugin extends Plugin {
 	 */
 	private async retireOlderCopies(): Promise<Partial<MapData> | null> {
 		const manager = (this.app as unknown as {
-			plugins?: { plugins?: Record<string, unknown>; manifests?: Record<string, { name?: string; dir?: string }>; disablePlugin?(id: string): Promise<void> };
+			plugins?: { plugins?: Record<string, unknown>; manifests?: Record<string, { name?: string; dir?: string }>;
+				disablePlugin?(id: string): Promise<void>; disablePluginAndSave?(id: string): Promise<void> };
 		}).plugins;
 		const isMapData = (d: unknown): d is Partial<MapData> => !!d && typeof (d as MapData).visits === "object";
 		let found: Partial<MapData> | null = null;
@@ -66,7 +67,9 @@ export default class WorldMapPlugin extends Plugin {
 			if (id === this.manifest.id || o?.manifest?.name !== this.manifest.name || typeof o.activateView !== "function" || !isMapData(o.data)) continue;
 			found ??= o.data;
 			try {
-				await manager?.disablePlugin?.(id);
+				// saved, so the enabled list that Sync carries no longer names the older copy
+				if (manager?.disablePluginAndSave) await manager.disablePluginAndSave(id);
+				else await manager?.disablePlugin?.(id);
 			} catch (e) {
 				new Notice(`World Map: could not switch off the older copy "${id}". Disable it under Community plugins.`);
 				console.error(e);

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-world-map",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Obsidian plugin: a globe/world map of countries visited",
   "main": "main.js",
   "scripts": {

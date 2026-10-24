@@ -28,7 +28,7 @@ function app({ running = null, onDisk = null, ownData = null } = {}) {
 	plugins["other"] = { manifest: { name: "Something else" }, data: { visits: {} }, activateView() {} };
 	return {
 		disabled, ownData, workspace: { getLeavesOfType: () => [] },
-		plugins: { plugins, manifests, async disablePlugin(id) { disabled.push(id); } },
+		plugins: { plugins, manifests, async disablePluginAndSave(id) { disabled.push(id); } },
 		vault: { adapter: { async read(path) { if (onDisk && path === ".obsidian/plugins/old-map/data.json") return JSON.stringify(onDisk); throw new Error("missing"); } } },
 	};
 }
