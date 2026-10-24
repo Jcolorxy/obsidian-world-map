@@ -1,0 +1,10 @@
+{
+  "id": "jinx-world-map",
+  "name": "World Map",
+  "version": "0.2.0",
+  "minAppVersion": "1.4.0",
+  "description": "A globe and world map of the countries you have visited, with the years you went and trips linked to your notes.",
+  "author": "Jcolorxy",
+  "authorUrl": "https://github.com/Jcolorxy",
+  "isDesktopOnly": false
+}

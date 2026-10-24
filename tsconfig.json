@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "module": "ESNext",
+    "target": "ES2018",
+    "allowJs": true,
+    "noImplicitAny": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "lib": ["DOM", "ES2019"]
+  },
+  "include": ["src/**/*.ts"]
+}

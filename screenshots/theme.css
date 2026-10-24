@@ -1,0 +1,34 @@
+/* An approximation of Obsidian's default dark theme, for README screenshots only. */
+:root {
+	--background-primary: #1e1e1e; --background-primary-alt: #242424;
+	--background-secondary: #262626; --background-secondary-alt: #2a2a2a;
+	--background-modifier-border: #363636; --background-modifier-border-hover: #474747;
+	--background-modifier-hover: rgba(255, 255, 255, 0.065);
+	--interactive-normal: #363636; --interactive-hover: #3f3f3f;
+	--interactive-accent: #7f6df2; --interactive-accent-hover: #8e7ef4;
+	--text-normal: #dcddde; --text-muted: #a8a8a8; --text-faint: #7a7a7a; --text-accent: #a99bf5; --text-on-accent: #ffffff; --text-error: #fb464c;
+	--color-red: #fb464c; --color-red-rgb: 251, 70, 76; --color-orange: #e9973f; --color-orange-rgb: 233, 151, 63;
+	--color-yellow: #e0de71; --color-yellow-rgb: 224, 222, 113; --color-green: #44cf6e; --color-green-rgb: 68, 207, 110;
+	--tag-background: rgba(127, 109, 242, 0.16); --tag-background-hover: rgba(127, 109, 242, 0.26); --tag-color: #b4a8f7;
+	--font-ui-small: 13px; --font-ui-smaller: 12px; --file-line-width: 760px;
+	--radius-s: 4px; --radius-m: 8px; --radius-l: 12px;
+	--size-4-1: 4px; --size-4-2: 8px; --size-4-3: 12px; --size-4-4: 16px; --size-4-6: 24px; --size-4-8: 32px;
+	--shadow-s: 0 1px 2px rgba(0, 0, 0, 0.35); --shadow-l: 0 8px 24px rgba(0, 0, 0, 0.45);
+	color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--background-primary); color: var(--text-normal);
+	font: 14px/1.5 Inter, "Segoe UI", system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+#app { padding: 18px 22px; }
+.view-content { height: 100%; }
+h1 { font-size: 1.6em; margin: 0 0 18px; }
+button { font: inherit; font-size: 13px; color: var(--text-normal); background: var(--interactive-normal); border: 0;
+	border-radius: var(--radius-s); padding: 5px 12px; cursor: pointer; box-shadow: var(--shadow-s); }
+button.mod-cta { background: var(--interactive-accent); color: var(--text-on-accent); }
+input, select, textarea { font: inherit; font-size: 13px; color: var(--text-normal); background: var(--background-primary-alt);
+	border: 1px solid var(--background-modifier-border); border-radius: var(--radius-s); padding: 5px 9px; }
+input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--interactive-accent); padding: 0; }
+.clickable-icon { background: transparent; box-shadow: none; color: var(--text-muted); padding: 4px; display: inline-flex; align-items: center; }
+.svg-icon { width: 16px; height: 16px; stroke-width: 1.75; vertical-align: middle; }
+.setting-item-description { color: var(--text-muted); font-size: var(--font-ui-smaller); }
+.markdown-preview-sizer { max-width: none; }
