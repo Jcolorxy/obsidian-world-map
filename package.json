@@ -1,6 +1,6 @@
 {
   "name": "obsidian-world-map",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Obsidian plugin: a globe/world map of countries visited",
   "main": "main.js",
   "scripts": {
@@ -14,8 +14,6 @@
     "@types/d3-geo": "^3.1.1",
     "@types/node": "^26.6.3",
     "@types/topojson-client": "^3.1.5",
-    "builtin-modules": "^5.4.0",
-    "canvas": "^3.2.3",
     "d3-geo": "^3.1.1",
     "esbuild": "^0.28.2",
     "lucide-static": "^1.61.0",

@@ -89,7 +89,7 @@ export class VisitModal extends Modal {
 					e.preventDefault();
 					this.addYear(pending || String(thisYear()));
 				});
-				setTimeout(() => t.inputEl.focus(), 0);
+				window.setTimeout(() => t.inputEl.focus(), 0);
 			})
 			.addButton((b) => b.setButtonText("Add").onClick(() => this.addYear(pending || String(thisYear()))));
 
@@ -228,7 +228,7 @@ export class TripModal extends Modal {
 
 		new Setting(contentEl).setName("Name").addText((x) => {
 			x.setPlaceholder("e.g. Japan 2026").setValue(t.title).onChange((v) => (t.title = v));
-			setTimeout(() => { if (!t.title) x.inputEl.focus(); }, 0);
+			window.setTimeout(() => { if (!t.title) x.inputEl.focus(); }, 0);
 		});
 
 		// countries, as removable chips

@@ -1,7 +1,7 @@
 import { Notice, Plugin, TAbstractFile, TFile, TFolder, WorkspaceLeaf } from "obsidian";
 import { geoCentroid } from "d3-geo";
 import { Country, UN_MEMBER_COUNT, loadCountries } from "./geo";
-import { DEFAULT_DATA, MapData, MapSettings, SCHEMA_VERSION, Trip, Visit, parseTripFolder, thisYear, todayISO, tripStatus } from "./types";
+import { DEFAULT_DATA, MapData, MapSettings, SCHEMA_VERSION, Trip, Visit, parseTripFolder, thisYear, tripStatus } from "./types";
 import { VIEW_TYPE, WorldMapView } from "./view";
 import { CountryPickerModal, FolderPickerModal, TripModal, VisitModal } from "./modals";
 import { WorldMapSettingTab } from "./settings";
@@ -20,7 +20,7 @@ export default class WorldMapPlugin extends Plugin {
 
 		this.registerView(VIEW_TYPE, (leaf) => new WorldMapView(leaf, this));
 		this.addRibbonIcon("globe", "Open world map", () => this.activateView());
-		this.addCommand({ id: "open", name: "Open world map", callback: () => this.activateView() });
+		this.addCommand({ id: "open", name: "Open map", callback: () => this.activateView() });
 		this.addCommand({
 			id: "add-country",
 			name: "Add a country you have visited",

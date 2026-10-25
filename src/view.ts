@@ -1,8 +1,8 @@
 import { ItemView, Menu, Notice, WorkspaceLeaf, setIcon } from "obsidian";
 import type WorldMapPlugin from "./main";
-import { Country, UN_MEMBER_COUNT, searchCountries } from "./geo";
+import { Country, UN_MEMBER_COUNT } from "./geo";
 import { DEFAULT_STATE, Palette, RECENCY_LEGEND, ViewState, countryAt, draw } from "./render";
-import { Projection, TRIP_STATUS_LABEL, Trip, Visit, formatYears, latestYear, thisYear, tripDates, tripStatus } from "./types";
+import { Projection, TRIP_STATUS_LABEL, Trip, Visit, formatYears, thisYear, tripDates, tripStatus } from "./types";
 import { CountryPickerModal, TripModal, VisitModal } from "./modals";
 
 export const VIEW_TYPE = "world-map-view";

@@ -52,6 +52,8 @@ Every option is optional. `projection` is `globe` or `flat` (default `flat`). `c
 
 Everything lives in the plugin's `data.json` in your vault: visits keyed by country, trips with their linked note paths, and settings. Nothing is sent anywhere.
 
+**Vault access.** The plugin lists your notes' paths only to fill the note picker when you link a note to a trip. It reads no note contents. The one file it reads directly is the `data.json` of an older copy of World Map installed under a different id, once, to carry your map over when the id changed. It makes no network requests.
+
 ## Install
 
 The plugin is not in the community directory yet. To install it by hand:
