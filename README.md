@@ -56,7 +56,7 @@ Everything lives in the plugin's `data.json` in your vault: visits keyed by coun
 
 ## Install
 
-The plugin is not in the community directory yet. To install it by hand:
+Needs Obsidian 1.13 or later. The plugin is not in the community directory yet. To install it by hand:
 
 1. Download `main.js`, `manifest.json` and `styles.css` from the latest release, or build them yourself (below).
 2. Copy them into `<your vault>/.obsidian/plugins/jcolorxy-world-map/`.
