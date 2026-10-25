@@ -7,6 +7,7 @@ export class TFolder { constructor(path, children = []) { this.path = path; this
 export class TAbstractFile {} export class Plugin { constructor(app) { this.app = app; } async loadData() { return null; } async saveData() {} }
 export class Notice { constructor(m) { globalThis.lastNotice = m; } }
 export class Modal {} export class FuzzySuggestModal {} export class ItemView {} export class PluginSettingTab {} export class Setting {} export class Menu {}
+export function addIcon() {}
 export function setIcon() {} export class WorkspaceLeaf {}`;
 const out = await build({ stdin: { contents: `export * from "./src/types"; export { default as WorldMap } from "./src/main"; export { TFile, TFolder } from "obsidian";`, resolveDir: ".", loader: "ts" },
 	bundle: true, platform: "node", format: "esm", write: false, logLevel: "silent",

@@ -50,11 +50,14 @@ export class VisitModal extends Modal {
 			const box = contentEl.createDiv({ cls: "world-map-visit-trips" });
 			for (const trip of trips) {
 				const row = box.createDiv({ cls: "world-map-trip-note" });
-				row.createSpan({ text: `${trip.title} · ${tripDates(trip)} · ${TRIP_STATUS_LABEL[tripStatus(trip)]}` });
+				row.createEl("button", { cls: "world-map-trip-title", text: `${trip.title} · ${tripDates(trip)} · ${TRIP_STATUS_LABEL[tripStatus(trip)]}` })
+					.addEventListener("click", () => { this.close(); void this.plugin.openTripHub(trip.id); });
+				box.createEl("button", { text: `View all ${trip.notes.length} notes →` })
+					.addEventListener("click", () => { this.close(); void this.plugin.openTripHub(trip.id); });
 				for (const path of trip.notes.slice(0, 3)) {
 					const note = box.createDiv({ cls: "world-map-trip-notelink" });
 					note.setText("↳ " + path.split("/").pop()!.replace(/\.md$/, ""));
-					note.addEventListener("click", () => { void this.plugin.openNote(path); this.close(); });
+					note.addEventListener("click", () => { void this.plugin.openNote(path, true); this.close(); });
 				}
 			}
 		}

@@ -1,3 +1,5 @@
+import { renderTripHub } from "./triphub";
+import { PLUGIN_ICON } from "./icon";
 import { ItemView, Menu, Notice, WorkspaceLeaf, setIcon } from "obsidian";
 import type WorldMapPlugin from "./main";
 import { Country, UN_MEMBER_COUNT } from "./geo";
@@ -30,6 +32,8 @@ export class WorldMapView extends ItemView {
 	private hovered: Country | null = null;
 	private query = "";
 	private frame = 0;
+	private activeTripId: string | null = null;
+	private noteQuery = "";
 
 	constructor(leaf: WorkspaceLeaf, private plugin: WorldMapPlugin) {
 		super(leaf);
@@ -37,7 +41,7 @@ export class WorldMapView extends ItemView {
 
 	getViewType() { return VIEW_TYPE; }
 	getDisplayText() { return "World map"; }
-	getIcon() { return "globe"; }
+	getIcon() { return PLUGIN_ICON; }
 
 	async onOpen() {
 		this.state.projection = this.plugin.data.settings.projection;
@@ -176,7 +180,27 @@ export class WorldMapView extends ItemView {
 		}
 	}
 
+	showTrip(id: string) {
+		this.activeTripId = id;
+		this.noteQuery = "";
+		this.refreshSidebar();
+	}
+
+	private refreshSidebar() {
+		const side = this.contentEl.querySelector<HTMLElement>(".world-map-side");
+		if (side) { side.empty(); this.renderSidebar(side); }
+	}
+
 	private renderSidebar(el: HTMLElement) {
+		const trip = this.plugin.data.trips.find((t) => t.id === this.activeTripId);
+		el.toggleClass("is-trip-hub", !!trip);
+		if (trip) {
+			renderTripHub(el, this.plugin, trip, this.noteQuery, (query) => { this.noteQuery = query; },
+				() => { this.activeTripId = null; this.refreshSidebar(); },
+				() => new TripModal(this.app, this.plugin, trip, () => this.render()).open());
+			return;
+		}
+		this.activeTripId = null;
 		this.renderTrips(el);
 		el.createDiv({ cls: "world-map-side-heading", text: "Countries" });
 		const visits = Object.values(this.plugin.effectiveVisits());
@@ -230,7 +254,7 @@ export class WorldMapView extends ItemView {
 
 	/** Trips with their linked notes: travelling now, then planned, then done. */
 	private renderTrips(el: HTMLElement) {
-		const trips = this.plugin.sortedTrips().filter((t) => !this.query || t.title.toLowerCase().includes(this.query.toLowerCase()));
+		const trips = this.plugin.sortedTrips().filter((t) => !this.query || (t.title.toLowerCase().includes(this.query.toLowerCase()) || t.notes.some((path) => path.toLowerCase().includes(this.query.toLowerCase()))));
 		const head = el.createDiv({ cls: "world-map-side-heading" });
 		head.createSpan({ text: "Trips" });
 		if (!trips.length) {
@@ -244,9 +268,9 @@ export class WorldMapView extends ItemView {
 		const status = tripStatus(trip);
 		const card = parent.createDiv({ cls: `world-map-trip is-${status}` });
 		const top = card.createDiv({ cls: "world-map-trip-top" });
-		const title = top.createSpan({ cls: "world-map-trip-title", text: trip.title });
-		title.title = "Edit trip";
-		title.addEventListener("click", () => new TripModal(this.app, this.plugin, trip, () => this.render()).open());
+		const title = top.createEl("button", { cls: "world-map-trip-title", text: trip.title });
+		title.title = "Open trip hub";
+		title.addEventListener("click", () => this.showTrip(trip.id));
 		top.createSpan({ cls: `world-map-trip-status is-${status}`, text: TRIP_STATUS_LABEL[status] });
 
 		const meta = card.createDiv({ cls: "world-map-trip-meta" });
@@ -263,9 +287,10 @@ export class WorldMapView extends ItemView {
 			setIcon(row.createSpan({ cls: "world-map-icon" }), "file-text");
 			row.createSpan({ text: path.split("/").pop()!.replace(/\.md$/, "") });
 			row.title = path;
-			row.addEventListener("click", () => void this.plugin.openNote(path));
+			row.addEventListener("click", () => void this.plugin.openNote(path, true));
 		}
-		if (trip.notes.length > 4) notes.createDiv({ cls: "world-map-row-years", text: `+ ${trip.notes.length - 4} more` });
+		notes.createEl("button", { cls: "world-map-open-hub", text: trip.notes.length ? `View all ${trip.notes.length} notes →` : "Open trip hub →" })
+			.addEventListener("click", () => this.showTrip(trip.id));
 		if (!trip.notes.length) notes.createDiv({ cls: "world-map-row-years", text: "No notes linked" });
 	}
 

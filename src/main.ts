@@ -1,4 +1,5 @@
-import { Notice, Plugin, TAbstractFile, TFile, TFolder, WorkspaceLeaf } from "obsidian";
+import { PLUGIN_ICON, PLUGIN_ICON_SVG } from "./icon";
+import { addIcon, Notice, Plugin, TAbstractFile, TFile, TFolder, WorkspaceLeaf } from "obsidian";
 import { geoCentroid } from "d3-geo";
 import { Country, UN_MEMBER_COUNT, loadCountries } from "./geo";
 import { DEFAULT_DATA, MapData, MapSettings, SCHEMA_VERSION, Trip, Visit, parseTripFolder, thisYear, tripStatus } from "./types";
@@ -13,13 +14,14 @@ export default class WorldMapPlugin extends Plugin {
 	private centroids = new Map<string, [number, number]>();
 
 	async onload() {
+		addIcon(PLUGIN_ICON, PLUGIN_ICON_SVG);
 		// an older copy under another id would register the same view and stop this one loading
 		const older = await this.retireOlderCopies();
 		await this.loadState(older);
 		this.loadGeography();
 
 		this.registerView(VIEW_TYPE, (leaf) => new WorldMapView(leaf, this));
-		this.addRibbonIcon("globe", "Open world map", () => this.activateView());
+		this.addRibbonIcon(PLUGIN_ICON, "Open world map", () => this.activateView());
 		this.addCommand({ id: "open", name: "Open map", callback: () => this.activateView() });
 		this.addCommand({
 			id: "add-country",
@@ -229,9 +231,9 @@ export default class WorldMapPlugin extends Plugin {
 		if (changed) await this.save();
 	}
 
-	async openNote(path: string) {
+	async openNote(path: string, newTab = false) {
 		const file = this.app.vault.getAbstractFileByPath(path);
-		if (file instanceof TFile) await this.app.workspace.getLeaf(false).openFile(file);
+		if (file instanceof TFile) await this.app.workspace.getLeaf(newTab ? "tab" : false).openFile(file);
 		else new Notice(`Not found: ${path}`);
 	}
 
@@ -328,6 +330,12 @@ export default class WorldMapPlugin extends Plugin {
 			await leaf.setViewState({ type: VIEW_TYPE, active: true });
 		}
 		await this.app.workspace.revealLeaf(leaf);
+	}
+
+	async openTripHub(id: string) {
+		await this.activateView();
+		const leaf = this.app.workspace.getLeavesOfType(VIEW_TYPE)[0];
+		if (leaf?.view instanceof WorldMapView) leaf.view.showTrip(id);
 	}
 
 	visitsList(): Visit[] {

@@ -7,6 +7,7 @@ export class PluginSettingTab { constructor(app, plugin) { this.app = app; this.
 export class Notice {} export class TFile {} export class TFolder {} export class TAbstractFile {} export class WorkspaceLeaf {}
 export class Modal { constructor(app) { this.app = app; } open() { (globalThis.opened ??= []).push(this.constructor.name); } close() {} }
 export class FuzzySuggestModal extends Modal { setPlaceholder() {} } export class ItemView {} export class Setting {} export class Menu {}
+export function addIcon() {}
 export function setIcon() {}`;
 const out = await build({ stdin: { contents: `export { default as WorldMap } from "./src/main"; export { WorldMapSettingTab } from "./src/settings";`, resolveDir: ".", loader: "ts" },
 	bundle: true, platform: "node", format: "esm", write: false, logLevel: "silent",

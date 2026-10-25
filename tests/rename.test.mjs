@@ -8,6 +8,7 @@ const stub = `export class Plugin { constructor(app, manifest) { this.app = app;
 export class Notice { constructor(m) { (globalThis.notices ??= []).push(m); } }
 export class TFile {} export class TFolder {} export class TAbstractFile {} export class WorkspaceLeaf {}
 export class Modal {} export class FuzzySuggestModal {} export class ItemView {} export class PluginSettingTab {} export class Setting {} export class Menu {}
+export function addIcon() {}
 export function setIcon() {}`;
 const out = await build({ stdin: { contents: `export { default as WorldMap } from "./src/main";`, resolveDir: ".", loader: "ts" },
 	bundle: true, platform: "node", format: "esm", write: false, logLevel: "silent",

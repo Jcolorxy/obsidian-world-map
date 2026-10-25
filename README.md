@@ -14,7 +14,7 @@ A globe and a flat world map of the countries you have been to, the years you we
 
 - **Globe or flat map.** Drag to spin or pan, scroll to zoom, *Reset view* to go back. Countries you have visited are shaded, darker for more recent visits (or one colour if you switch *Shade by recency* off).
 - **Countries and years.** Click a country, or use *Add country*, to record the years you went and an optional note.
-- **Trips.** A trip has a name, one or more countries, dates (or just a year) and any number of linked notes. Trips show in the sidebar with their notes one click away.
+- **Trips.** A trip has a name, one or more countries, dates (or just a year) and any number of linked notes. Click a trip title or **View all notes** to open its hub: browse every linked note, search by name or folder path, and open notes in a new tab while keeping the map available. **Edit trip / manage notes** manages the trip and its links. Country details also link to each trip’s hub.
   - Status is worked out from the dates: *Planned*, *Travelling now* or *Done*. You can also set it by hand.
   - Done and current trips count towards your visited countries. Planned trips are drawn with a dashed outline, so you can see where you are going next.
   - *Link a whole folder* adds every note in a folder to a trip.
