@@ -38,6 +38,7 @@ Object.assign(P, {
 (globalThis as any).createDiv = (o?: O) => make("div", o);
 
 // --- the API surface the plugin imports -----------------------------------------
+export function addIcon() {}
 export function setIcon(el: HTMLElement, name: string) {
 	const svg = (ICONS as Record<string, string>)[name];
 	el.innerHTML = svg ? svg.replace("<svg", '<svg class="svg-icon"') : "";

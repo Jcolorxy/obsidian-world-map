@@ -2,11 +2,13 @@
 
 A globe and a flat world map of the countries you have been to, the years you went, and the trips behind them, linked to the notes you wrote along the way.
 
+![World Map in action: spinning the globe, the flat map with labels, zooming and panning, and trips with their notes](docs/showreel.gif)
+
 ![Globe view with trips](docs/globe.png)
 
 ![Flat map view](docs/flat.png)
 
-*Screenshots use invented demo data.*
+*Screenshots and the showreel use invented demo data. Regenerate them with `node screenshots/shoot.mjs` and `node screenshots/showreel.mjs`.*
 
 ## Features
 
