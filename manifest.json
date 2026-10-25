@@ -1,8 +1,8 @@
 {
   "id": "jcolorxy-world-map",
   "name": "World Map",
-  "version": "0.2.2",
-  "minAppVersion": "1.4.0",
+  "version": "0.2.3",
+  "minAppVersion": "1.7.2",
   "description": "A globe and world map of the countries you have visited, with the years you went and trips linked to your notes.",
   "author": "Jcolorxy",
   "authorUrl": "https://github.com/Jcolorxy",

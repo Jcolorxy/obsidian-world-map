@@ -1,4 +1,4 @@
-import { GeoPath, GeoProjection, geoCentroid, geoContains, geoDistance, geoEqualEarth, geoGraticule10, geoOrthographic, geoPath } from "d3-geo";
+import { GeoProjection, geoCentroid, geoContains, geoDistance, geoEqualEarth, geoGraticule10, geoOrthographic, geoPath } from "d3-geo";
 import { Country } from "./geo";
 import { Projection, Visit, latestYear } from "./types";
 
@@ -94,7 +94,7 @@ export function draw(canvas: HTMLCanvasElement, o: DrawOptions) {
 	ctx.clearRect(0, 0, width, height);
 
 	const projection = makeProjection(o.state, width, height);
-	const path = geoPath(projection, ctx as unknown as CanvasRenderingContext2D) as GeoPath;
+	const path = geoPath(projection, ctx);
 
 	// ocean: a disc for the globe, the whole pane for the flat map
 	ctx.beginPath();
@@ -184,7 +184,7 @@ const centroidCache = new Map<string, [number, number]>();
 function centroidOf(country: Country): [number, number] {
 	const hit = centroidCache.get(country.id);
 	if (hit) return hit;
-	const centre = geoCentroid(country.feature as never) as [number, number];
+	const centre = geoCentroid(country.feature);
 	centroidCache.set(country.id, centre);
 	return centre;
 }
@@ -201,7 +201,7 @@ export function countryAt(
 	const coords = projection.invert?.(point);
 	if (!coords || !isFinite(coords[0]) || !isFinite(coords[1])) return null;
 	for (const country of countries) {
-		if (geoContains(country.feature as never, coords)) return country;
+		if (geoContains(country.feature, coords)) return country;
 	}
 	return null;
 }

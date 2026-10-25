@@ -105,10 +105,9 @@ export class WorldMapView extends ItemView {
 		for (const mode of ["globe", "flat"] as Projection[]) {
 			const b = modes.createEl("button", { text: mode === "globe" ? "Globe" : "Map" });
 			b.toggleClass("is-active", this.state.projection === mode);
-			b.addEventListener("click", async () => {
+			b.addEventListener("click", () => {
 				this.state = { ...DEFAULT_STATE, projection: mode, rotate: this.state.rotate };
-				await this.plugin.setSettings({ projection: mode });
-				this.render();
+				void this.plugin.setSettings({ projection: mode }).then(() => this.render());
 			});
 		}
 
@@ -133,18 +132,16 @@ export class WorldMapView extends ItemView {
 		const shade = bar.createEl("label", { cls: "world-map-check" });
 		const shadeBox = shade.createEl("input", { type: "checkbox" });
 		shadeBox.checked = this.plugin.data.settings.shadeByRecency;
-		shadeBox.addEventListener("change", async () => {
-			await this.plugin.setSettings({ shadeByRecency: shadeBox.checked });
-			this.render();
+		shadeBox.addEventListener("change", () => {
+			void this.plugin.setSettings({ shadeByRecency: shadeBox.checked }).then(() => this.render());
 		});
 		shade.createSpan({ text: "Shade by recency" });
 
 		const labels = bar.createEl("label", { cls: "world-map-check" });
 		const labelBox = labels.createEl("input", { type: "checkbox" });
 		labelBox.checked = this.plugin.data.settings.labels;
-		labelBox.addEventListener("change", async () => {
-			await this.plugin.setSettings({ labels: labelBox.checked });
-			this.paint();
+		labelBox.addEventListener("change", () => {
+			void this.plugin.setSettings({ labels: labelBox.checked }).then(() => this.paint());
 		});
 		labels.createSpan({ text: "Labels" });
 

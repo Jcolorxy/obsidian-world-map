@@ -312,7 +312,7 @@ export default class WorldMapPlugin extends Plugin {
 	centroid(country: Country): [number, number] | null {
 		const hit = this.centroids.get(country.id);
 		if (hit) return hit;
-		const centre = geoCentroid(country.feature as never) as [number, number];
+		const centre = geoCentroid(country.feature);
 		if (!centre || !isFinite(centre[0])) return null;
 		this.centroids.set(country.id, centre);
 		return centre;
@@ -327,7 +327,7 @@ export default class WorldMapPlugin extends Plugin {
 			leaf = this.app.workspace.getLeaf("tab");
 			await leaf.setViewState({ type: VIEW_TYPE, active: true });
 		}
-		this.app.workspace.revealLeaf(leaf);
+		await this.app.workspace.revealLeaf(leaf);
 	}
 
 	visitsList(): Visit[] {
